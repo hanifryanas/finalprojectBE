@@ -1,16 +1,11 @@
-const userServiceModel = require('../models/userService');
+const userServiceModel = require('../models/users.model');
 const jwt = require('jsonwebtoken');
 
 class controllerUsers {
     static async getUserById(req, res) {
         const userId = req.params.id;
         const user = await userServiceModel.findUserById(userId);
-        if (user) {
-            res.status(200).json(user);
-        }
-        else {
-            res.status(404).send('user not found');
-        }
+        (user) ? res.status(200).json(user) : res.status(404).send('user not found');
     }
     static async createUser(req, res) {
         let user = req.body;
@@ -51,19 +46,8 @@ class controllerUsers {
     static async updateUser(req, res) {
         const userId = req.params.id;
         const user = req.body;
-        const existingUserEmail = await userServiceModel.findUserByEmail(req.body.email);
-        if (existingUserEmail) {
-            res.status(400).send('user email already used');
-        }
-        else {
-            userServiceModel.updateUser(userId, user)
-                .then(() => {
-                    res.status(204).send('user updated');
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
-        }
+        const updatedUser = await userServiceModel.updateUserById(userId, user);
+        (updatedUser) ? res.status(201).json(updatedUser) : res.status(404).send('user not found');
     }
     static async deleteUser(req, res) {
         const userId = req.params.id;

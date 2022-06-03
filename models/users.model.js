@@ -2,17 +2,12 @@ const db = require('../config/db');
 
 class userServiceModel {
     static createUser(user) {
-        let dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.run(`INSERT INTO users (username, email, password, address, phone, join_date) VALUES (?, ?, ?, ?, ?, ?)`, 
                 [user.username, user.email, user.password, user.address, user.phone, dateNow], (err) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(user);
-                    }
+                    (err) ? reject(err) : resolve(user);
                 });
             });
         });
@@ -21,12 +16,7 @@ class userServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, row) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(row);
-                    }
+                    (err) ? reject(err) : resolve(row);
                 });
             });
         });
@@ -35,12 +25,7 @@ class userServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.get(`SELECT * FROM users WHERE id = ?`, [id], (err, row) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(row);
-                    }
+                    (err) ? reject(err) : resolve(row);
                 });
             });
         });
@@ -49,12 +34,7 @@ class userServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, row) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(row);
-                    }
+                    (err) ? reject(err) : resolve(row);
                 });
             });
         });
@@ -64,12 +44,7 @@ class userServiceModel {
             db.serialize(() => {
                 db.run(`UPDATE users SET username = ?, email = ?, password = ?, address = ?, phone = ? WHERE id = ?`, 
                 [user.username, user.email, user.password, user.address, user.phone, id], (err) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(user);
-                    }
+                    (err) ? reject(err) : resolve(user);
                 });
             });
         });
@@ -78,12 +53,7 @@ class userServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.run(`DELETE FROM users WHERE id = ?`, [id], (err) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve();
-                    }
+                    (err) ? reject(err) : resolve(id);
                 });
             });
         });

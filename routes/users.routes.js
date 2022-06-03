@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const controllerUsers = require('../controllers/users.js');
+const controllerUsers = require('../controllers/users.controller.js');
 const Middleware = require('../middleware/checkAuth.js');
 
 router.get('/id/:id', controllerUsers.getUserById);

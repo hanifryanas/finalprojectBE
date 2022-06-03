@@ -1,13 +1,13 @@
 const db = require('./db')
 
-const createMerchants = `
-    CREATE TABLE merchants(
+const createUsers = `
+    CREATE TABLE users(
         id INTEGER PRIMARY KEY,
-        username TEXT NOT NULL UNIQUE,
-        email TEXT NOT NULL UNIQUE,
+        username TEXT NOT NULL,
+        email TEXT NOT NULL,
         password TEXT NOT NULL,
         address TEXT NOT NULL,
-        phone INTEGER NOT NULL,
+        phone TEXT NOT NULL,
         join_date TEXT NOT NULL
     )
 `
@@ -15,27 +15,25 @@ const createMerchants = `
 const createProducts = `
     CREATE TABLE products(
         id INTEGER PRIMARY KEY,
-        merchant_id INTEGER,
+        owner_ID INTEGER,
         name TEXT NOT NULL,
-        quantity INTEGER NOT NULL,
+        description TEXT NOT NULL,
         price INTEGER NOT NULL,
-        FOREIGN KEY (merchant_id) REFERENCES merchants(id)
+        image TEXT NOT NULL,
+        category TEXT NOT NULL,
+        start_bid_date TEXT NOT NULL,
+        close_bid_date TEXT NOT NULL,
+        top_bidder INTEGER,
+        FOREIGN KEY (owner_ID) REFERENCES users(id)
+        FOREIGN KEY (top_bidder) REFERENCES users(id)
         )
 `
 
 db.serialize(() => {
-    db.run(createMerchants, (err) => {
-        if (!err) {
-            console.log('table merchants created')
-        } else {
-            console.log(err)
-        }
-    })
-    db.run(createProducts, (err) => {
-        if (!err) {
-            console.log('table products created')
-        } else {
-            console.log(err)
-        }
-    })
+    db.run(createUsers), (err) => {
+        (err) ? console.error(err) : console.log('Users table created.')
+    }
+    db.run(createProducts), (err) => {
+        (err) ? console.error(err) : console.log('Products table created.')
+    }
 })
