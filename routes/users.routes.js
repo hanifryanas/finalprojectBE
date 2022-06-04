@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controllerUsers = require('../controllers/users.controller.js');
-const Middleware = require('../middleware/checkAuth.js');
+const Middleware = require('../middleware/checkAuth.middleware.js');
 
 router.get('/id/:id', controllerUsers.getUserById);
 router.post('/', controllerUsers.createUser);

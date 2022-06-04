@@ -8,3 +8,5 @@ router.post('/:id/product', Middleware.checkAuth, controllerProducts.createProdu
 router.put('/:id/product/:productId', Middleware.checkAuth, controllerProducts.updateProduct);
 router.put('/:id/product/:productId/bid/:bidderId', Middleware.checkAuth, controllerProducts.bidProduct);
 router.delete('/:id/product/:productId', Middleware.checkAuth, controllerProducts.deleteProduct);
+
+module.exports = router;
