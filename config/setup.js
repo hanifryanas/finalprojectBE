@@ -21,12 +21,26 @@ const createProducts = `
         price INTEGER NOT NULL,
         image TEXT NOT NULL,
         category TEXT NOT NULL,
+        bidding_range INTEGER NOT NULL,
         start_bid_date TEXT NOT NULL,
         close_bid_date TEXT NOT NULL,
         top_bidder INTEGER,
-        FOREIGN KEY (owner_ID) REFERENCES users(id)
+        FOREIGN KEY (owner_ID) REFERENCES users(id),
         FOREIGN KEY (top_bidder) REFERENCES users(id)
         )
+`
+
+const createOrders = `
+    CREATE TABLE orders(
+        id INTEGER PRIMARY KEY,
+        owner_ID INTEGER,
+        product_ID INTEGER,
+        bidder_ID INTEGER,
+        price INTEGER NOT NULL,
+        FOREIGN KEY (owner_ID) REFERENCES users(id),
+        FOREIGN KEY (product_ID) REFERENCES products(id),
+        FOREIGN KEY (bidder_ID) REFERENCES users(id)
+    )
 `
 
 db.serialize(() => {
@@ -35,5 +49,8 @@ db.serialize(() => {
     }
     db.run(createProducts), (err) => {
         (err) ? console.error(err) : console.log('Products table created.')
+    }
+    db.run(createOrders), (err) => {
+        (err) ? console.error(err) : console.log('Orders table created.')
     }
 })

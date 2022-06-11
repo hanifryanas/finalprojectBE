@@ -55,7 +55,7 @@ class productServiceModel {
                     (err) ? reject(err) : resolve();
                 });
             });
-        });
+        }); 
     }
 }
 
