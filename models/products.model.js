@@ -22,8 +22,8 @@ class productServiceModel {
     static async createProduct(userId, product) {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`INSERT INTO products (name, description, price, image, category, start_bid_date, close_bid_date, owner_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
-                [product.name, product.description, product.price, product.image, product.category, product.start_bid_date, product.close_bid_date, userId], (err) => {
+                db.run(`INSERT INTO products (name, description, price, image, category, bidding_range, start_bid_date, close_bid_date, owner_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+                [product.name, product.description, product.price, product.image, product.category, product.bidding_range, product.start_bid_date, product.close_bid_date, userId], (err) => {
                     (err) ? reject(err) : resolve(product);
                 });
             });
@@ -32,8 +32,8 @@ class productServiceModel {
     static async updateProductById(userId, productId, product) {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`UPDATE products SET name = ?, description = ?, price = ?, image = ?, category = ?, start_bid_date = ?, close_bid_date = ? WHERE id = ? AND top_bidder = ?`,
-                [product.name, product.description, product.price, product.image, product.category, product.start_bid_date, product.close_bid_date, productId, userId], (err) => {
+                db.run(`UPDATE products SET name = ?, description = ?, price = ?, image = ?, category = ?, bidding_range = ?,start_bid_date = ?, close_bid_date = ? WHERE id = ? AND top_bidder = ?`,
+                [product.name, product.description, product.price, product.image, product.category, product.bidding_range, product.start_bid_date, product.close_bid_date, productId, userId], (err) => {
                     (err) ? reject(err) : resolve(product);
                 });
             });
