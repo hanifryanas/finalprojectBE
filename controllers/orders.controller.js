@@ -1,4 +1,5 @@
 const orderServiceModel = require('../models/orders.model.js');
+const productServiceModel = require('../models/products.model.js');
 
 class controllerOrders {
     static async getAllOrders(req, res) {
@@ -13,12 +14,21 @@ class controllerOrders {
     }
     static async createOrder(req, res) {
         const order = req.body;
-        const userId = req.params.userId;
         const productId = req.params.productId;
         const bidderId = req.params.bidderId;
+        const product = await productServiceModel.findProductById(productId);
+        const userId = product.owner_ID;
         const newOrder = await orderServiceModel.createOrder(userId, productId, bidderId, order);
         (newOrder) ? res.status(201).json(newOrder) : res.status(404).send('order not created');
     }
+    static async updateTopBidder(req, res) {
+        const productId = req.params.productId;
+        const bidderId = req.params.bidderId;
+        const price = req.body.price;
+        const updatedTopBidder = await orderServiceModel.updateTopBidder(productId, bidderId, price);
+        (updatedTopBidder) ? res.status(201).json(updatedTopBidder) : res.status(404).send('product not found');
+    }
+
 }
 
 module.exports = controllerOrders;

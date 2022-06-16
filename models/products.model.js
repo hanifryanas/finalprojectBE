@@ -5,7 +5,7 @@ class productServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.all(`SELECT * FROM products`, (err, rows) => {
-                    (err) ? reject(err) : resolve(product);
+                    (err) ? reject(err) : resolve(rows);
                 });
             });
         });
@@ -14,7 +14,7 @@ class productServiceModel {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.get(`SELECT * FROM products WHERE id = ?`, [productId], (err, row) => {
-                    (err) ? reject(err) : resolve(product);
+                    (err) ? reject(err) : resolve(row);
                 });
             });
         });

@@ -29,6 +29,16 @@ class orderServiceModel {
             });
         });
     }
+    static async updateTopBidder( productId, bidderId, price) {
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run(`UPDATE orders SET top_bidder = ?, price = ? WHERE product_ID = ?`, [bidderId, price, productId], (err) => {
+                    (err) ? reject(err) : resolve();
+                });
+            });
+        });
+    }
+
 }
 
 module.exports = orderServiceModel;
