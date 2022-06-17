@@ -46,13 +46,13 @@ const createOrders = `
 `
 
 db.serialize(() => {
-    // db.run(createUsers), (err) => {
-    //     (err) ? console.error(err) : console.log('Users table created.')
-    // }
+    db.run(createUsers), (err) => {
+        (err) ? console.error(err) : console.log('Users table created.')
+    }
     db.run(createProducts), (err) => {
         (err) ? console.error(err) : console.log('Products table created.')
     }
-    // db.run(createOrders), (err) => {
-    //     (err) ? console.error(err) : console.log('Orders table created.')
-    // }
+    db.run(createOrders), (err) => {
+        (err) ? console.error(err) : console.log('Orders table created.')
+    }
 })
