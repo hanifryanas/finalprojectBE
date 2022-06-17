@@ -14,6 +14,8 @@ app.use(cors(
     }
 ));
 
+app.options('*', cors())
+
 app.use('/user', require('./routes/users.routes.js'));
 app.use('/product', require('./routes/products.routes.js'));
 app.use('/bid', require('./routes/orders.routes.js'));
