@@ -24,9 +24,9 @@ const createProducts = `
         bidding_range INTEGER NOT NULL,
         start_bid_date TEXT NOT NULL,
         close_bid_date TEXT NOT NULL,
-        top_bidder INTEGER,
+        top_bidder TEXT,
         FOREIGN KEY (owner_ID) REFERENCES users(id),
-        FOREIGN KEY (top_bidder) REFERENCES users(id)
+        FOREIGN KEY (top_bidder) REFERENCES users(username)
         )
 `
 
@@ -37,20 +37,22 @@ const createOrders = `
         product_ID INTEGER,
         bidder_ID INTEGER,
         price INTEGER NOT NULL,
+        username_bidder TEXT NOT NULL,
         FOREIGN KEY (owner_ID) REFERENCES users(id),
         FOREIGN KEY (product_ID) REFERENCES products(id),
-        FOREIGN KEY (bidder_ID) REFERENCES users(id)
+        FOREIGN KEY (bidder_ID) REFERENCES users(id),
+        FOREIGN KEY (username_bidder) REFERENCES users(username)
     )
 `
 
 db.serialize(() => {
-    db.run(createUsers), (err) => {
-        (err) ? console.error(err) : console.log('Users table created.')
-    }
+    // db.run(createUsers), (err) => {
+    //     (err) ? console.error(err) : console.log('Users table created.')
+    // }
     db.run(createProducts), (err) => {
         (err) ? console.error(err) : console.log('Products table created.')
     }
-    db.run(createOrders), (err) => {
-        (err) ? console.error(err) : console.log('Orders table created.')
-    }
+    // db.run(createOrders), (err) => {
+    //     (err) ? console.error(err) : console.log('Orders table created.')
+    // }
 })

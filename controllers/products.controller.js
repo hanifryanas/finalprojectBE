@@ -1,4 +1,5 @@
 const productServiceModel = require('../models/products.model.js');
+const userServiceModel = require('../models/users.model.js');
 
 class controllerProducts {
     static async getAllProducts(req, res) {
@@ -26,8 +27,10 @@ class controllerProducts {
     static async bidProduct(req, res) {
         const productId = req.params.productId;
         const bidderId = req.params.bidderId;
+        const user = await userServiceModel.findUserById(bidderId);
+        const usernameBidder = user.username;
         const product = req.body;
-        const updatedBidProduct = await productServiceModel.bidProduct(productId, bidderId, product);
+        const updatedBidProduct = await productServiceModel.bidProduct(productId, usernameBidder, product);
         (updatedBidProduct) ? res.status(201).json(updatedBidProduct) : res.status(404).send('product not found');
     }
     static async deleteProduct(req, res) {

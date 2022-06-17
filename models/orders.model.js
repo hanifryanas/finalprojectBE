@@ -19,20 +19,29 @@ class orderServiceModel {
             });
         });
     }
-    static async createOrder(userId, productId, bidderId, order) {
+    static async findOrderByProductId(productId) {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`INSERT INTO orders (user_ID, product_ID, bidder_ID, price) VALUES (?, ?, ?, ?)`, 
-                [userId, productId, bidderId, order.price], (err) => {
+                db.all(`SELECT * FROM orders WHERE product_ID = ? ORDER BY price DESC LIMIT 5`, [productId], (err, rows) => {
+                    (err) ? reject(err) : resolve(rows);
+                });
+            });
+        });
+    }
+    static async createOrder(userId, productId, bidderId, usernameBidder, order) {
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run(`INSERT INTO orders (owner_ID, product_ID, bidder_ID, price, username_bidder) VALUES (?, ?, ?, ?, ?)`, 
+                [userId, productId, bidderId, order.price, usernameBidder], (err) => {
                     (err) ? reject(err) : resolve(order);
                 });
             });
         });
     }
-    static async updateTopBidder( productId, bidderId, price) {
+    static async updateTopBidder( productId, usernameBidder, price) {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`UPDATE orders SET top_bidder = ?, price = ? WHERE product_ID = ?`, [bidderId, price, productId], (err) => {
+                db.run(`UPDATE orders SET top_bidder = ?, price = ? WHERE product_ID = ?`, [usernameBidder, price, productId], (err) => {
                     (err) ? reject(err) : resolve();
                 });
             });

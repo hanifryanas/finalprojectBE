@@ -39,10 +39,10 @@ class productServiceModel {
             });
         });
     }
-    static async bidProduct(productId, bidderId, product) {
+    static async bidProduct(productId, usernameBidder, product) {
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`UPDATE products SET top_bidder = ?, price = ? WHERE id = ?`, [bidderId, product.price, productId], (err) => {
+                db.run(`UPDATE products SET top_bidder = ?, price = ? WHERE id = ?`, [usernameBidder, product.price, productId], (err) => {
                     (err) ? reject(err) : resolve(product);
                 });
             });
