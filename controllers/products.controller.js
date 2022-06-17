@@ -6,7 +6,7 @@ class controllerProducts {
         (products) ? res.status(200).json(products) : res.status(404).send('products not found');
     }
     static async getProductById(req, res) {
-        const productId = req.params.id;
+        const productId = req.params.productId;
         const product = await productServiceModel.findProductById(productId);
         (product) ? res.status(200).json(product) : res.status(404).send('product not found');
     }
