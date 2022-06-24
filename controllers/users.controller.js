@@ -1,5 +1,6 @@
 const userServiceModel = require('../models/users.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 class controllerUsers {
     static async getUserById(req, res) {
@@ -25,8 +26,9 @@ class controllerUsers {
     }
     static async loginUser(req, res) {
         const user = await userServiceModel.findUserByEmail(req.body.email);
+        const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
         if (user) {
-            if (user.password === req.body.password) {
+            if (isPasswordValid) {
                 const token = jwt.sign({
                     id: user.id
                 }, process.env.SECRET_KEY, { expiresIn: '4h' });

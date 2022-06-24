@@ -1,12 +1,15 @@
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
 
 class userServiceModel {
     static createUser(user) {
         const dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const hashedEmail = bcrypt.hashSync(user.email, 10);
+        const hashedPass = bcrypt.hashSync(user.password, 10);
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.run(`INSERT INTO users (username, email, password, address, phone, join_date) VALUES (?, ?, ?, ?, ?, ?)`, 
-                [user.username, user.email, user.password, user.address, user.phone, dateNow], (err) => {
+               [user.username, hashedEmail, hashedPass, user.address, user.phone, dateNow], (err) => {
                     (err) ? reject(err) : resolve(user);
                 });
             });
@@ -31,19 +34,22 @@ class userServiceModel {
         });
     } 
     static findUserByEmail(email) {
+        const hashedEmail = bcrypt.hashSync(email, 10);
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, row) => {
+                db.get(`SELECT * FROM users WHERE email = ?`, [hashedEmail], (err, row) => {
                     (err) ? reject(err) : resolve(row);
                 });
             });
         });
     }
     static updateUser(id, user) {
+        const hashedEmail = bcrypt.hashSync(user.email, 10);
+        const hashedPass = bcrypt.hashSync(user.password, 10);
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.run(`UPDATE users SET username = ?, email = ?, password = ?, address = ?, phone = ? WHERE id = ?`, 
-                [user.username, user.email, user.password, user.address, user.phone, id], (err) => {
+                [user.username, hashedEmail, hashedPass, user.address, user.phone, id], (err) => {
                     (err) ? reject(err) : resolve(user);
                 });
             });
