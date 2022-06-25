@@ -26,10 +26,8 @@ class controllerUsers {
     }
     static async loginUser(req, res) {
         const user = await userServiceModel.findUserByEmail(req.body.email);
-        const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
-        console.log(isPasswordValid);
         if (user) {
-            if (isPasswordValid) {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
                 const token = jwt.sign({
                     id: user.id
                 }, process.env.SECRET_KEY, { expiresIn: '4h' });

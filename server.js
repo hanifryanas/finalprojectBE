@@ -8,8 +8,7 @@ const cors = require('cors');
 
 app.use(cors(
     {
-        //set origin to deployed url
-        origin: process.env.ORIGIN,
+        origin: 'http://melelang.herokuapp.com',
         credentials: true
     }
 ));
