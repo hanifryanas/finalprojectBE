@@ -26,6 +26,7 @@ class controllerUsers {
     }
     static async loginUser(req, res) {
         const user = await userServiceModel.findUserByEmail(req.body.email);
+        console.log(user);
         const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
         if (user) {
             if (isPasswordValid) {
